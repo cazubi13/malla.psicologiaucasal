@@ -1,13 +1,22 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Malla Curricular Psicología UCASAL</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <h1>Malla Curricular Interactiva - Psicología UCASAL (Plan 1114)</h1>
+
+  <div class="leyenda">
+    <span class="estado-regular">● Regularizada</span>
+    <span class="estado-final">● Aprobada</span>
+    <span class="cursada">● Correlativa para cursar</span>
+    <span class="aprobada">● Correlativa para rendir</span>
+    <button onclick="limpiarProgreso()">🧹 Limpiar progreso</button>
+  </div>
+
   <div id="malla"></div>
 
   <script src="script.js"></script>
