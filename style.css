@@ -1,50 +1,132 @@
 body {
-  font-family: sans-serif;
-  background-color: #fdf6f9;
-  color: #333;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  background-color: #f8f9fa;
+  color: #343a40;
   padding: 20px;
 }
 
 h1 {
-  color: #d77fa1;
+  color: #ad5d82;
   text-align: center;
+  margin-bottom: 20px;
+}
+
+.leyenda {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 25px;
+  flex-wrap: wrap;
+}
+
+.leyenda span {
+  padding: 5px 10px;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.leyenda .seleccionada {
+  background-color: #f7e1ff;
+  border: 1px solid #c77dff;
+  color: #7b2cbf;
+}
+.leyenda .para-cursar {
+  background-color: #dbeafe;
+  border: 1px solid #60a5fa;
+  color: #2563eb;
+}
+.leyenda .para-rendir {
+  background-color: #dcfce7;
+  border: 1px solid #4ade80;
+  color: #16a34a;
+}
+.leyenda .requerida-por {
+  background-color: #ffedd5;
+  border: 1px solid #fb923c;
+  color: #f97316;
+}
+
+#malla-contenedor {
+  max-width: 1600px;
+  margin: 0 auto;
+  overflow-x: auto; /* Para pantallas pequeñas */
 }
 
 #malla {
   display: grid;
-  grid-template-columns: repeat(6, 1fr);
+  grid-template-columns: repeat(10, 1fr); /* 10 semestres */
+  gap: 15px;
+}
+
+.semestre-columna {
+  display: flex;
+  flex-direction: column;
   gap: 10px;
-  max-width: 1200px;
-  margin: 0 auto;
+  border-left: 1px solid #dee2e6;
+  padding-left: 10px;
+}
+
+.semestre-header {
+  font-weight: bold;
+  text-align: center;
+  color: #6c757d;
+  padding: 10px;
+  border-bottom: 2px solid #e9ecef;
 }
 
 .materia {
-  border: 2px solid #f3cfe3;
-  border-radius: 10px;
-  padding: 10px;
-  background-color: #fbe6f2;
-  text-align: center;
-  transition: transform 0.2s;
+  border: 1px solid #ced4da;
+  border-left: 5px solid #6c757d; /* Color por defecto */
+  border-radius: 8px;
+  padding: 12px;
+  background-color: #fff;
+  font-size: 14px;
+  transition: all 0.2s ease-in-out;
   cursor: pointer;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
 }
 
 .materia:hover {
-  transform: scale(1.05);
-  box-shadow: 0 0 10px #eeb7d6;
+  transform: translateY(-3px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 }
 
-.cursada {
-  border-color: #82b5ff;
+.materia strong {
+  display: block;
+  margin-bottom: 5px;
+  color: #495057;
 }
 
-.aprobada {
-  border-color: #85e085;
+.materia span {
+  font-size: 12px;
+  color: #6c757d;
 }
 
-.estado-regular {
-  background-color: #f7bad3;
+/* --- Estados de Interacción --- */
+.materia.seleccionada {
+  border-left-color: #7b2cbf;
+  background-color: #f7e1ff;
 }
 
-.estado-final {
-  background-color: #d7b9f3;
+.materia.correlativa-cursar {
+  border-left-color: #2563eb;
+  background-color: #dbeafe;
 }
+
+.materia.correlativa-rendir {
+  border-left-color: #16a34a;
+  background-color: #dcfce7;
+}
+
+.materia.requerida-por {
+    border-left-color: #f97316;
+    background-color: #ffedd5;
+}
+
+/* --- Opacidad para materias no relacionadas --- */
+.materia.opaca {
+    opacity: 0.5;
+    transition: opacity 0.2s;
+}```

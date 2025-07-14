@@ -10,14 +10,17 @@
   <h1>Malla Curricular Interactiva - Psicología UCASAL (Plan 1114)</h1>
 
   <div class="leyenda">
-    <span class="estado-regular">● Regularizada</span>
-    <span class="estado-final">● Aprobada</span>
-    <span class="cursada">● Correlativa para cursar</span>
-    <span class="aprobada">● Correlativa para rendir</span>
-    <button onclick="limpiarProgreso()">🧹 Limpiar progreso</button>
+    <span class="seleccionada">● Materia Seleccionada</span>
+    <span class="para-cursar">● Necesaria para Cursar</span>
+    <span class="para-rendir">● Necesaria para Rendir</span>
+    <span class="requerida-por">● La Requiere</span>
   </div>
 
-  <div id="malla"></div>
+  <div id="malla-contenedor">
+      <div id="malla">
+          <!-- El contenido se generará con JavaScript -->
+      </div>
+  </div>
 
   <script src="script.js"></script>
 </body>
