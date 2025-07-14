@@ -41,7 +41,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const mallaContenedor = document.getElementById("malla");
     const TOTAL_SEMESTRES = 10;
 
-    // --- FUNCIONES DE LÓGICA ---
+    // --- LÓGICA DE AUTOCOMPLETADO Y GESTIÓN DE CLICS ---
 
     function aplicarRequisitosInteligentemente(codigo, estadoObjetivo) {
         const materia = materias.find(m => m.codigo === codigo);
@@ -181,9 +181,10 @@ document.addEventListener("DOMContentLoaded", () => {
                     gestionarClicDerecho(materia.codigo);
                 });
                 
-                // ...otros listeners...
-                divMateria.addEventListener("mouseover", () => {}); // Placeholder para futuras visualizaciones
-                divMateria.addEventListener("mouseout", () => {}); // Placeholder
+                divMateria.addEventListener("mouseover", () => {});
+                divMateria.addEventListener("mouseout", () => {});
+                
+                columna.appendChild(divMateria);
             }
         });
 
