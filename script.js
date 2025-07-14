@@ -30,7 +30,7 @@ document.addEventListener("DOMContentLoaded", () => {
         { codigo: "07 0510", nombre: "Psicología Forense", anio: 5, semestre: 1, esAnual: false, cursar: [{materia: "07 0270", estado: "Aprob."}, {materia: "07 1320", estado: "Aprob."}, {materia: "07 0390", estado: "Reg."}, {materia: "07 0210", estado: "Reg."}], rendir: [{materia: "07 0390", estado: "Aprob."}, {materia: "07 0210", estado: "Aprob."}] },
         { codigo: "09 2250", nombre: "Metodología de la Inv. en Psicología II", anio: 5, semestre: 1, esAnual: false, cursar: [{materia: "07 0120", estado: "Aprob."}, {materia: "07 0410", estado: "Aprob."}, {materia: "07 0420", estado: "Reg."}], rendir: [{materia: "07 0420", estado: "Aprob."}] },
         { codigo: "75 2450", nombre: "Salud Pública", anio: 5, semestre: 1, esAnual: false, cursar: [{materia: "07 0170", estado: "Aprob."}, {materia: "07 0390", estado: "Aprob."}, {materia: "07 1320", estado: "Aprob."}, {materia: "07 1250", estado: "Reg."}], rendir: [{materia: "07 1250", estado: "Aprob."}] },
-        { codigo: "09 1520", nombre: "Trabajo Integrador Final", anio: 5, semestre: 2, esAnual: false, cursar: [{materia: "09 0240", estado: "Reg."}, {materia: "09 2250", estado: "Reg."}], rendir: [ {materia:"07 1330", estado:"Aprob."}, {materia:"05 0010", estado:"Aprob."}, {materia:"07 0260", estado:"Aprob."}, {materia:"09 2240", estado:"Aprob."}, {materia:"10 0700", estado:"Aprob."}, {materia:"07 0020", estado:"Aprob."}, {materia:"10 1205", estado:"Aprob."}, {materia:"05 0500", estado:"Aprob."}, {materia:"15 0740", estado:"Aprob."}, {materia:"00 0010", estado:"Aprob."}, {materia:"07 0150", estado:"Aprob."}, {materia:"07 0330", estado:"Aprob."}, {materia:"47 0090", estado:"Aprob."}, {materia:"05 0020", estado:"Aprob."}, {materia:"07 0440", estado:"Aprob."}, {materia:"20 0100", estado:"Aprob."}, {materia:"05 0310", estado:"Aprob."}, {materia:"07 0040", estado:"Aprob."}, {materia:"07 0080", estado:"Aprob."}, {materia:"07 1300", estado:"Aprob."}, {materia:"07 0590", estado:"Aprob."}, {materia:"00 0020", estado:"Aprob."}, {materia:"07 0120", estado:"Aprob."}, {materia:"07 0170", estado:"Aprob."}, {materia:"07 0270", estado:"Aprob."}, {materia:"07 0280", estado:"Aprob."}, {materia:"07 1310", estado:"Aprob."}, {materia:"07 0390", estado:"Aprob."}, {materia:"07 0410", estado:"Aprob."}, {materia:"07 1320", estado:"Aprob."}, {materia:"09 0230", estado:"Aprob."}, {materia:"07 0210", estado:"Aprob."}, {materia:"00 0080", estado:"Aprob."}, {materia:"07 0300", estado:"Aprob."}, {materia:"07 0420", estado:"Aprob."}, {materia:"07 1260", estado:"Aprob."}, {materia:"09 0240", estado:"Aprob."}, {materia:"05 0250", estado:"Aprob."}, {materia:"07 0250", estado:"Aprob."}, {materia:"07 0290", estado:"Aprob."}, {materia:"07 1250", estado:"Aprob."}, {materia:"75 2460", estado:"Aprob."}, {materia:"07 0240", estado:"Aprob."}, {materia:"07 0490", estado:"Aprob."}, {materia:"07 0500", estado:"Aprob."}, {materia:"07 0510", estado:"Aprob."}, {materia:"09 2250", estado:"Aprob."}, {materia:"75 2450", estado:"Aprob."}, {materia:"97 0240", estado:"Aprob."}, {materia:"97 0180", estado:"Aprob."}, {materia:"97 0190", estado:"Aprob."}, {materia:"97 0250", estado:"Aprob."}, {materia:"97 0260", estado:"Aprob."} ] },
+        { codigo: "09 1520", nombre: "Trabajo Integrador Final", anio: 5, semestre: 2, esAnual: false, cursar: [{materia: "09 0240", estado: "Reg."}, {materia: "09 2250", estado: "Reg."}], rendir: [ {materia:"07 1330", estado:"Aprob."}, {materia:"05 0010", estado:"Aprob."}, {materia:"07 0260", estado:"Aprob."}, {materia:"09 2240", estado:"Aprob."}, {materia:"10 0700", estado:"Aprob."}, {materia:"07 0020", estado:"Aprob."}, {materia:"10 1205", estado:"Aprob."}, {materia:"05 0500", estado:"Aprob."}, {materia:"15 0740", estado:"Aprob."}, {materia:"00 0010", estado:"Aprob."}, {materia:"07 0150", estado:"Aprob."}, {materia:"07 0330", estado:"Aprob."}, {materia:"47 0090", estado:"Aprob."}, {materia:"05 0020", estado:"Aprob."}, {materia:"07 0440", estado:"Aprob."}, {materia:"20 0100", estado:"Aprob."}, {materia:"05 0310", estado:"Aprob."}, {materia:"07 0040", estado:"Aprob."}, {materia:"07 0080", estado:"Aprob."}, {materia:"07 1300", estado:"Aprob."}, {materia:"07 0590", estado:"Aprob."}, {materia:"00 0020", estado:"Aprob."}, {materia:"07 0120", estado:"Aprob."}, {materia:"07 0170", estado:"Aprob."}, {materia:"07 0270", estado:"Aprob."}, {materia:"07 0280", estado:"Aprob."}, {materia:"07 1310", estado:"Aprob."}, {materia:"07 0390", estado:"Aprob."}, {materia:"07 0410", estado:"Aprob."}, {materia:"07 1320", estado:"Aprob."}, {materia:"09 0230", estado:"Aprob."}, {materia:"07 0210", estado:"Aprob."}, {materia:"00 0080", estado:"Aprob."}, {materia:"07 0300", estado:"Aprob."}, {materia:"07 0420", estado:"Aprob."}, {materia:"07 1260", estado:"Aprob."}, {materia:"09 0240", estado:"Aprob."}, {materia:"05 0250", estado: "Aprob."}, {materia:"07 0250", estado:"Aprob."}, {materia:"07 0290", estado:"Aprob."}, {materia:"07 1250", estado:"Aprob."}, {materia:"75 2460", estado:"Aprob."}, {materia:"07 0240", estado:"Aprob."}, {materia:"07 0490", estado:"Aprob."}, {materia:"07 0500", estado:"Aprob."}, {materia:"07 0510", estado:"Aprob."}, {materia:"09 2250", estado:"Aprob."}, {materia:"75 2450", estado:"Aprob."}, {materia:"97 0240", estado:"Aprob."}, {materia:"97 0180", estado:"Aprob."}, {materia:"97 0190", estado:"Aprob."}, {materia:"97 0250", estado:"Aprob."}, {materia:"97 0260", estado:"Aprob."} ] },
         { codigo: "97 0180", nombre: "Práctica Pre Profesional Jurídico Forense", anio: 5, semestre: 2, esAnual: false, cursar: [{materia: "07 0120", estado: "Aprob."}, {materia: "07 0390", estado: "Aprob."}, {materia: "07 0510", estado: "Reg."}, {materia: "07 0290", estado: "Reg."}, {materia: "05 0250", estado: "Reg."}], rendir: [{materia: "05 0250", estado: "Aprob."}, {materia: "07 0290", estado: "Aprob."}, {materia: "07 0510", estado: "Aprob."}] },
         { codigo: "97 0190", nombre: "Práctica Pre Profesional Socio Comunitaria", anio: 5, semestre: 2, esAnual: false, cursar: [{materia: "07 0170", estado: "Aprob."}, {materia: "07 0280", estado: "Aprob."}, {materia: "07 0250", estado: "Reg."}, {materia: "75 2450", estado: "Reg."}, {materia: "07 1250", estado: "Reg."}, {materia: "07 0290", estado: "Reg."}, {materia: "75 2460", estado: "Reg."}], rendir: [{materia: "07 1250", estado: "Aprob."}, {materia: "07 0250", estado: "Aprob."}, {materia: "75 2460", estado: "Aprob."}, {materia: "07 0290", estado: "Aprob."}, {materia: "75 2450", estado: "Aprob."}] },
         { codigo: "97 0240", nombre: "Práctica Pre-Profesional Educacional", anio: 5, semestre: 2, esAnual: false, cursar: [{materia: "07 0590", estado: "Aprob."}, {materia: "07 0120", estado: "Aprob."}, {materia: "07 0270", estado: "Aprob."}, {materia: "07 0410", estado: "Aprob."}, {materia: "07 0290", estado: "Reg."}, {materia: "07 0300", estado: "Reg."}, {materia: "07 0420", estado: "Reg."}], rendir: [{materia: "07 0420", estado: "Aprob."}, {materia: "07 0300", estado: "Aprob."}, {materia: "07 0290", estado: "Aprob."}] },
@@ -41,56 +41,86 @@ document.addEventListener("DOMContentLoaded", () => {
     const mallaContenedor = document.getElementById("malla");
     const TOTAL_SEMESTRES = 10;
 
-    // --- LÓGICA DE AUTOCOMPLETADO Y GESTIÓN DE CLICS ---
+    // --- FUNCIONES DE LÓGICA ---
 
-    function aplicarRequisitosRecursivamente(codigo, estadoObjetivo) {
+    function aplicarRequisitosInteligentemente(codigo, estadoObjetivo) {
         const materia = materias.find(m => m.codigo === codigo);
         if (!materia) return;
 
-        // Determina la lista de requisitos a procesar (para cursar o para rendir)
         const requisitos = (estadoObjetivo === 'final') ? materia.rendir : materia.cursar;
 
-        // Para cada requisito, aplicamos su estado correspondiente y seguimos viajando hacia atrás
         requisitos.forEach(req => {
             const estadoRequerido = (req.estado === 'Aprob.') ? 'final' : 'regular';
-            
             const estadoActual = localStorage.getItem(req.materia);
 
-            // No queremos "bajar" de categoría una materia. Si ya es final, la dejamos así.
-            if (estadoActual === 'final') return; 
+            if (estadoActual === 'final') {
+                aplicarRequisitosInteligentemente(req.materia, estadoRequerido);
+                return;
+            }
+            if (estadoActual === 'regular' && estadoRequerido === 'regular') {
+                aplicarRequisitosInteligentemente(req.materia, estadoRequerido);
+                return;
+            }
 
             localStorage.setItem(req.materia, estadoRequerido);
-
-            // Llamada recursiva para procesar el árbol de este requisito
-            aplicarRequisitosRecursivamente(req.materia, estadoRequerido);
+            aplicarRequisitosInteligentemente(req.materia, estadoRequerido);
         });
     }
+
+    function puedeEstarEnEstado(codigo, estado) {
+        const materia = materias.find(m => m.codigo === codigo);
+        if (!materia) return false;
+        const requisitos = (estado === 'final') ? materia.rendir : materia.cursar;
+        if (requisitos.length === 0) return true;
+
+        return requisitos.every(req => {
+            const estadoReq = localStorage.getItem(req.materia);
+            if (req.estado === 'Aprob.') return estadoReq === 'final';
+            return estadoReq === 'regular' || estadoReq === 'final';
+        });
+    }
+
+    function validarProgresoCompleto() {
+        let algoCambio;
+        for (let i = 0; i < 10; i++) {
+            algoCambio = false;
+            materias.forEach(materia => {
+                const estado = localStorage.getItem(materia.codigo);
+                if (estado && !puedeEstarEnEstado(materia.codigo, estado)) {
+                    localStorage.removeItem(materia.codigo);
+                    algoCambio = true;
+                }
+            });
+            if (!algoCambio) break;
+        }
+    }
     
-    function gestionarClicMateria(codigo) {
+    // --- GESTIÓN DE CLICS (LÓGICA PRINCIPAL) ---
+
+    function gestionarClicIzquierdo(codigo) {
         const estadoActual = localStorage.getItem(codigo);
 
-        if (estadoActual === null) { // 1er Clic: Vacío -> Regular
-            // Aplicamos los requisitos para CURSAR la materia actual
-            aplicarRequisitosRecursivamente(codigo, 'regular');
-            // Y finalmente, marcamos la materia actual como regular
+        if (estadoActual === null) {
             localStorage.setItem(codigo, 'regular');
-
-        } else if (estadoActual === 'regular') { // 2do Clic: Regular -> Final
-            // Aplicamos los requisitos para RENDIR la materia actual
-            aplicarRequisitosRecursivamente(codigo, 'final');
-            // Y finalmente, marcamos la materia actual como final
+        } else if (estadoActual === 'regular') {
             localStorage.setItem(codigo, 'final');
-
-        } else if (estadoActual === 'final') { // 3er Clic: Final -> Vacío
+        } else if (estadoActual === 'final') {
             localStorage.removeItem(codigo);
-            // Opcional: podrías querer limpiar también las correlativas que se marcaron
-            // por esta materia. Por simplicidad, por ahora solo la limpia a ella.
         }
-
+        
         actualizarVisualMalla();
     }
 
-    // --- LÓGICA DE LA INTERFAZ Y CREACIÓN DE LA MALLA ---
+    function gestionarClicDerecho(codigo) {
+        const confirmacion = confirm(`¿Quieres marcar esta materia como FINAL y autocompletar todas sus correlativas?\n\nEsta acción es ideal para ponerte al día rápidamente.`);
+        if (!confirmacion) return;
+        
+        aplicarRequisitosInteligentemente(codigo, 'final');
+        localStorage.setItem(codigo, 'final');
+        actualizarVisualMalla();
+    }
+
+    // --- LÓGICA DE LA INTERFAZ ---
 
     function actualizarVisualMalla() {
         materias.forEach(materia => {
@@ -134,24 +164,30 @@ document.addEventListener("DOMContentLoaded", () => {
                 divMateria.dataset.codigo = materia.codigo;
                 divMateria.innerHTML = `<strong>${materia.nombre}</strong><span>${materia.codigo}</span>`;
                 
-                divMateria.addEventListener("click", () => gestionarClicMateria(materia.codigo));
-                divMateria.addEventListener("contextmenu", (e) => e.preventDefault());
-                divMateria.addEventListener("mouseover", () => resaltarCorrelativas(materia.codigo));
-                divMateria.addEventListener("mouseout", limpiarResaltado);
-
-                columna.appendChild(divMateria);
+                divMateria.addEventListener("click", () => gestionarClicIzquierdo(materia.codigo));
+                divMateria.addEventListener("contextmenu", (e) => {
+                    e.preventDefault();
+                    // Al hacer clic derecho, primero verificamos si la materia ya está marcada.
+                    const estadoActual = localStorage.getItem(materia.codigo);
+                    if (estadoActual === 'final') {
+                        // Si ya está aprobada, la acción es borrar en cascada.
+                        const confirmDelete = confirm(`¿Estás seguro de que quieres BORRAR esta materia y todas las que dependen de ella?`);
+                        if(confirmDelete) {
+                            localStorage.removeItem(materia.codigo);
+                            validarProgresoCompleto();
+                            actualizarVisualMalla();
+                        }
+                    } else {
+                        // Si no está aprobada, la acción es autocompletar.
+                        gestionarClicDerecho(materia.codigo);
+                    }
+                });
+                
+                // ...otros listeners...
             }
         });
 
         actualizarVisualMalla();
-    }
-    
-    function resaltarCorrelativas(codigoSeleccionado) {
-        // ...
-    }
-    
-    function limpiarResaltado() {
-        // ...
     }
 
     crearMalla();
