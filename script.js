@@ -112,12 +112,23 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function gestionarClicDerecho(codigo) {
-        const confirmacion = confirm(`¿Quieres marcar esta materia como FINAL y autocompletar todas sus correlativas?\n\nEsta acción es ideal para ponerte al día rápidamente.`);
-        if (!confirmacion) return;
-        
-        aplicarRequisitosInteligentemente(codigo, 'final');
-        localStorage.setItem(codigo, 'final');
-        actualizarVisualMalla();
+        const estadoActual = localStorage.getItem(codigo);
+
+        if (estadoActual === 'final') {
+            const confirmDelete = confirm(`¿Estás seguro de que quieres BORRAR esta materia y todas las que dependen de ella?`);
+            if(confirmDelete) {
+                localStorage.removeItem(codigo);
+                validarProgresoCompleto();
+                actualizarVisualMalla();
+            }
+        } else {
+            const confirmacion = confirm(`¿Quieres marcar esta materia como FINAL y autocompletar todas sus correlativas?\n\nEsta acción es ideal para ponerte al día rápidamente.`);
+            if (confirmacion) {
+                aplicarRequisitosInteligentemente(codigo, 'final');
+                localStorage.setItem(codigo, 'final');
+                actualizarVisualMalla();
+            }
+        }
     }
 
     // --- LÓGICA DE LA INTERFAZ ---
@@ -167,23 +178,12 @@ document.addEventListener("DOMContentLoaded", () => {
                 divMateria.addEventListener("click", () => gestionarClicIzquierdo(materia.codigo));
                 divMateria.addEventListener("contextmenu", (e) => {
                     e.preventDefault();
-                    // Al hacer clic derecho, primero verificamos si la materia ya está marcada.
-                    const estadoActual = localStorage.getItem(materia.codigo);
-                    if (estadoActual === 'final') {
-                        // Si ya está aprobada, la acción es borrar en cascada.
-                        const confirmDelete = confirm(`¿Estás seguro de que quieres BORRAR esta materia y todas las que dependen de ella?`);
-                        if(confirmDelete) {
-                            localStorage.removeItem(materia.codigo);
-                            validarProgresoCompleto();
-                            actualizarVisualMalla();
-                        }
-                    } else {
-                        // Si no está aprobada, la acción es autocompletar.
-                        gestionarClicDerecho(materia.codigo);
-                    }
+                    gestionarClicDerecho(materia.codigo);
                 });
                 
                 // ...otros listeners...
+                divMateria.addEventListener("mouseover", () => {}); // Placeholder para futuras visualizaciones
+                divMateria.addEventListener("mouseout", () => {}); // Placeholder
             }
         });
 
