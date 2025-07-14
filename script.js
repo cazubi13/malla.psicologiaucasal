@@ -43,42 +43,37 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // --- LÓGICA DE AUTOCOMPLETADO Y GESTIÓN DE CLICS ---
 
-    // VERSIÓN NUEVA Y CORRECTA que viaja por todo el árbol de correlativas.
-    function obtenerArbolDePrerequisitos(codigo, tipoRequisito, arbol = new Set()) {
+    function aplicarRequisitosRecursivamente(codigo, tipoObjetivo) {
         const materia = materias.find(m => m.codigo === codigo);
-        // Si ya hemos procesado esta materia en esta búsqueda, paramos para evitar bucles.
-        if (!materia || arbol.has(materia.codigo)) return arbol;
+        if (!materia) return;
 
-        // Añadimos la materia actual al árbol para marcarla.
-        arbol.add(materia.codigo);
+        const requisitos = (tipoObjetivo === 'final') ? materia.rendir : materia.cursar;
 
-        // Determinamos qué requisitos buscar (para cursar o para rendir).
-        const requisitos = (tipoRequisito === 'final') ? materia.rendir : materia.cursar;
-
-        // Para cada requisito, llamamos a la función de nuevo.
         requisitos.forEach(req => {
-            const proximoTipo = (req.estado === 'Aprob.') ? 'final' : 'regular';
-            obtenerArbolDePrerequisitos(req.materia, proximoTipo, arbol);
+            const estadoRequerido = (req.estado === 'Aprob.') ? 'final' : 'regular';
+            
+            // Solo actualizamos si el estado actual es "menor" al requerido.
+            const estadoActual = localStorage.getItem(req.materia);
+            if(estadoRequerido === 'final' || (estadoRequerido === 'regular' && estadoActual === null)) {
+                localStorage.setItem(req.materia, estadoRequerido);
+            }
+            
+            // Llamada recursiva para seguir viajando hacia atrás
+            aplicarRequisitosRecursivamente(req.materia, estadoRequerido);
         });
-
-        return arbol;
     }
     
     function gestionarClicMateria(codigo) {
         const estadoActual = localStorage.getItem(codigo);
 
         if (estadoActual === null) { // 1er Clic: Vacío -> Regular
-            // Obtenemos el árbol de requisitos para regularizar
-            const arbolRegular = obtenerArbolDePrerequisitos(codigo, 'regular');
-            // Marcamos todo el árbol como regular
-            arbolRegular.forEach(pre => localStorage.setItem(pre, 'regular'));
-            
+            aplicarRequisitosRecursivamente(codigo, 'regular');
+            localStorage.setItem(codigo, 'regular');
+
         } else if (estadoActual === 'regular') { // 2do Clic: Regular -> Final
-            // Obtenemos el árbol de requisitos para el final
-            const arbolFinal = obtenerArbolDePrerequisitos(codigo, 'final');
-            // Marcamos todo el árbol como final
-            arbolFinal.forEach(pre => localStorage.setItem(pre, 'final'));
-            
+            aplicarRequisitosRecursivamente(codigo, 'final');
+            localStorage.setItem(codigo, 'final');
+
         } else if (estadoActual === 'final') { // 3er Clic: Final -> Vacío
             localStorage.removeItem(codigo);
         }
@@ -143,11 +138,11 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     
     function resaltarCorrelativas(codigoSeleccionado) {
-        // ... esta función puede simplificarse o mantenerse como está para la ayuda visual ...
+        // Esta función es solo visual, no necesita cambios
     }
     
     function limpiarResaltado() {
-        // ... esta función puede simplificarse o mantenerse como está para la ayuda visual ...
+        // Esta función es solo visual, no necesita cambios
     }
 
     crearMalla();
