@@ -15,6 +15,12 @@
     <button onclick="limpiarProgreso()">🧹 Limpiar Progreso</button>
   </div>
 
+  <!--
+    AQUÍ ESTÁ LA CORRECCIÓN:
+    El div principal tiene el ID "malla-contenedor" (para el scroll).
+    El div interno, que es el que JavaScript manipula, tiene el ID "malla".
+    El script busca "malla" y ahí dentro crea las columnas.
+  -->
   <div id="malla-contenedor">
       <div id="malla">
           <!-- El contenido se generará con JavaScript -->
