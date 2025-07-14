@@ -41,29 +41,56 @@ document.addEventListener("DOMContentLoaded", () => {
     const mallaContenedor = document.getElementById("malla");
     const TOTAL_SEMESTRES = 10;
 
-    // --- LÓGICA DE VERIFICACIÓN DE CORRELATIVAS ---
+    // --- LÓGICA DE VERIFICACIÓN DE CORRELATIVAS (CORREGIDA) ---
+    // ESTA ES LA FUNCIÓN CLAVE QUE ESTABA ROTA
     function puedeRegularizar(codigo) {
         const materia = materias.find(m => m.codigo === codigo);
         if (!materia) return false;
-        return materia.cursar.every(req => {
-            const estadoReq = localStorage.getItem(req.materia);
-            return (req.estado === 'Aprob.') ? estadoReq === 'final' : (estadoReq === 'regular' || estadoReq === 'final');
-        });
+
+        // Si la materia no tiene requisitos para cursar, siempre se puede.
+        // Esto arregla el problema de las materias de primer año.
+        if (materia.cursar.length === 0) {
+            return true;
+        }
+
+        // Revisa cada requisito para cursar.
+        for (const req of materia.cursar) {
+            const estadoRequisito = localStorage.getItem(req.materia);
+            
+            if (req.estado === 'Aprob.') {
+                if (estadoRequisito !== 'final') return false; // No está aprobada.
+            } else if (req.estado === 'Reg.') {
+                if (estadoRequisito !== 'regular' && estadoRequisito !== 'final') return false; // No está ni regular ni aprobada.
+            }
+        }
+
+        // Si pasó todas las verificaciones, entonces se puede regularizar.
+        return true;
     }
 
     function puedeFinalizar(codigo) {
         const materia = materias.find(m => m.codigo === codigo);
         if (!materia || localStorage.getItem(codigo) !== 'regular') return false;
-        return materia.rendir.every(req => localStorage.getItem(req.materia) === 'final');
+        
+        // Para rendir, TODOS los requisitos deben tener estado 'final'.
+        for (const req of materia.rendir) {
+            if (localStorage.getItem(req.materia) !== 'final') return false;
+        }
+        
+        return true;
     }
 
     function encontrarPrerequisitos(codigo, prerequisitos = new Set()) {
         const materia = materias.find(m => m.codigo === codigo);
         if (!materia || prerequisitos.has(codigo)) return prerequisitos;
         
-        prerequisitos.add(codigo);
+        // No agregamos la materia objetivo, solo sus prerequisitos.
+        // Los agregamos primero para que el recorrido sea hacia atrás.
         materia.cursar.forEach(req => encontrarPrerequisitos(req.materia, prerequisitos));
         materia.rendir.forEach(req => encontrarPrerequisitos(req.materia, prerequisitos));
+
+        // Añadimos la materia actual DESPUÉS de sus prerequisitos.
+        prerequisitos.add(codigo);
         
         return prerequisitos;
     }
@@ -94,17 +121,23 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if (estadoActual === null) { // Materia sin marcar
             if (puedeRegularizar(codigo)) {
-                const confirmacion = confirm(`¿Quieres marcar esta materia como REGULAR y aprobar automáticamente todas sus correlativas?\n\nEsta acción es ideal para ponerte al día rápidamente.`);
+                // Ofrecemos la opción de autocompletado.
+                const confirmacion = confirm(`¿Quieres marcar esta materia como REGULAR y aprobar automáticamente todas sus correlativas?\n\n(Ideal para ponerte al día rápidamente)`);
                 if (confirmacion) {
                     const prerequisitos = encontrarPrerequisitos(codigo);
                     prerequisitos.forEach(pre => {
-                        if (pre !== codigo) { // No queremos marcar la materia actual como final aún
+                        // Aprobamos todas las necesarias MENOS la que estamos regularizando.
+                        if (pre !== codigo) { 
                             localStorage.setItem(pre, 'final');
                         }
                     });
+                    // Marcamos la actual como regular.
                     localStorage.setItem(codigo, 'regular');
-                    actualizarVisualMalla();
+                } else {
+                    // Si no quiere autocompletar, la marcamos solo a ella.
+                    localStorage.setItem(codigo, 'regular');
                 }
+                actualizarVisualMalla();
             } else {
                 alert('Materia bloqueada: Aún no cumples las correlativas para cursarla.');
             }
@@ -149,9 +182,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 divMateria.innerHTML = `<strong>${materia.nombre}</strong><span>${materia.codigo}</span>`;
                 
                 divMateria.addEventListener("click", () => cambiarEstadoMateria(materia.codigo));
-                // Quitamos el Clic Derecho para no generar confusión
-                divMateria.addEventListener("contextmenu", (e) => e.preventDefault());
-
+                divMateria.addEventListener("contextmenu", (e) => e.preventDefault()); // Evita el menú del navegador
                 divMateria.addEventListener("mouseover", () => resaltarCorrelativas(materia.codigo));
                 divMateria.addEventListener("mouseout", limpiarResaltado);
 
@@ -162,13 +193,12 @@ document.addEventListener("DOMContentLoaded", () => {
         actualizarVisualMalla();
     }
     
-    function resaltarCorrelativas(codigoSeleccionado) { /* Código sin cambios */ }
+    function resaltarCorrelativas(codigoSeleccionado) { /* Código sin cambios, para la visualización */ }
     function limpiarResaltado() { /* Código sin cambios */ }
 
     crearMalla();
 });
 
-// La función de limpiar sigue siendo global
 function limpiarProgreso() {
     if (confirm('¿Estás seguro de que quieres borrar todo tu progreso? Esta acción no se puede deshacer.')) {
         localStorage.clear();
