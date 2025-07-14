@@ -1,14 +1,15 @@
+/* style.css */
 @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap');
 
 body {
   font-family: 'Nunito', sans-serif;
-  background-color: #fff5f8; /* Rosa muy pálido de fondo */
+  background-color: #fff5f8;
   color: #5c3a4d;
   padding: 20px;
 }
 
 h1 {
-  color: #e58cba; /* Rosa principal para el título */
+  color: #e58cba;
   text-align: center;
   margin-bottom: 20px;
   font-weight: 700;
@@ -33,7 +34,6 @@ h1 {
   transition: all 0.2s ease;
 }
 
-/* Colores de la leyenda */
 .leyenda .estado-regular { background-color: #fedee4; border: 1px solid #f4a5b9; color: #b56d82;}
 .leyenda .estado-final { background-color: #f1e4ff; border: 1px solid #c58af9; color: #8e4ec6;}
 .leyenda button { background-color: #f1f1f1; color: #555; }
@@ -50,7 +50,7 @@ h1 {
   display: grid;
   grid-template-columns: repeat(10, 1fr);
   gap: 15px;
-  min-width: 1400px; /* Evita que se aplaste demasiado */
+  min-width: 1400px;
 }
 
 .semestre-columna {
@@ -69,8 +69,8 @@ h1 {
 }
 
 .materia {
-  border: 1px solid #fce8f0; /* Borde rosa muy suave */
-  border-left: 6px solid #e0c8d3; /* Borde por defecto */
+  border: 1px solid #fce8f0;
+  border-left: 6px solid #e0c8d3;
   border-radius: 10px;
   padding: 15px;
   background-color: #fff;
@@ -84,7 +84,7 @@ h1 {
   justify-content: center;
 }
 
-.materia:hover {
+.materia:not(.materia-bloqueada):hover {
   transform: translateY(-4px);
   box-shadow: 0 5px 15px rgba(229, 140, 186, 0.15);
 }
@@ -111,6 +111,13 @@ h1 {
   border-left-color: #c58af9;
 }
 
+/* --- ESTADO DE BLOQUEO --- */
+.materia.materia-bloqueada {
+    opacity: 0.6;
+    background-color: #f8f8f8;
+    cursor: not-allowed;
+    box-shadow: none;
+}
 
 /* --- ESTADOS DE INTERACCIÓN (Hover) --- */
 .materia.seleccionada {
@@ -130,9 +137,7 @@ h1 {
 }
 .materia.opaca {
     opacity: 0.6;
-    transform: none; /* No animar las opacas */
-    box-shadow: none;
 }
 .materia.opaca:hover {
-    opacity: 0.6; /* Mantener opacidad en hover */
+    opacity: 0.6;
 }
