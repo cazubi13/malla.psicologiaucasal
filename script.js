@@ -37,80 +37,88 @@ document.addEventListener("DOMContentLoaded", () => {
         { codigo: "97 0250", nombre: "Práctica Pre-Profesional Laboral", anio: 5, semestre: 2, esAnual: false, cursar: [{materia: "07 0270", estado: "Aprob."}, {materia: "07 0390", estado: "Aprob."}, {materia: "07 0170", estado: "Aprob."}, {materia: "07 0590", estado: "Aprob."}, {materia: "07 0410", estado: "Aprob."}, {materia: "07 0120", estado: "Aprob."}, {materia: "07 0290", estado: "Reg."}, {materia: "07 0420", estado: "Reg."}, {materia: "07 0210", estado: "Reg."}], rendir: [{materia: "07 0210", estado: "Aprob."}, {materia: "07 0420", estado: "Aprob."}, {materia: "07 0290", estado: "Aprob."}] },
         { codigo: "97 0260", nombre: "Práctica Pre-Profesional Clínica", anio: 5, semestre: 2, esAnual: false, cursar: [{materia: "07 0390", estado: "Aprob."}, {materia: "07 0170", estado: "Aprob."}, {materia: "07 0120", estado: "Aprob."}, {materia: "07 0270", estado: "Aprob."}, {materia: "07 0410", estado: "Aprob."}, {materia: "07 0590", estado: "Aprob."}, {materia: "75 2460", estado: "Reg."}, {materia: "07 0420", estado: "Reg."}, {materia: "07 1330", estado: "Reg."}, {materia: "07 0290", estado: "Reg."}], rendir: [{materia: "07 1330", estado: "Aprob."}, {materia: "07 0420", estado: "Aprob."}, {materia: "75 2460", estado: "Aprob."}, {materia: "07 0290", estado: "Aprob."}] }
     ];
-
+    
     const mallaContenedor = document.getElementById("malla");
     const TOTAL_SEMESTRES = 10;
 
     // --- LÓGICA DE VERIFICACIÓN DE CORRELATIVAS ---
-    function puedeRegularizar(codigo) { /* ...código sin cambios... */ }
-    function puedeFinalizar(codigo) { /* ...código sin cambios... */ }
+    function puedeRegularizar(codigo) {
+        const materia = materias.find(m => m.codigo === codigo);
+        if (!materia) return false;
+        return materia.cursar.every(req => {
+            const estadoReq = localStorage.getItem(req.materia);
+            return (req.estado === 'Aprob.') ? estadoReq === 'final' : (estadoReq === 'regular' || estadoReq === 'final');
+        });
+    }
+
+    function puedeFinalizar(codigo) {
+        const materia = materias.find(m => m.codigo === codigo);
+        if (!materia || localStorage.getItem(codigo) !== 'regular') return false;
+        return materia.rendir.every(req => localStorage.getItem(req.materia) === 'final');
+    }
+
+    function encontrarPrerequisitos(codigo, prerequisitos = new Set()) {
+        const materia = materias.find(m => m.codigo === codigo);
+        if (!materia || prerequisitos.has(codigo)) return prerequisitos;
+        
+        prerequisitos.add(codigo);
+        materia.cursar.forEach(req => encontrarPrerequisitos(req.materia, prerequisitos));
+        materia.rendir.forEach(req => encontrarPrerequisitos(req.materia, prerequisitos));
+        
+        return prerequisitos;
+    }
 
     // --- LÓGICA DE LA INTERFAZ ---
-    function actualizarVisualMalla() { /* ...código sin cambios... */ }
+    function actualizarVisualMalla() {
+        materias.forEach(materia => {
+            const divMateria = document.querySelector(`.materia[data-codigo="${materia.codigo}"]`);
+            if (!divMateria) return;
+            
+            divMateria.classList.remove('materia-bloqueada', 'estado-regular', 'estado-final');
+            
+            const estadoGuardado = localStorage.getItem(materia.codigo);
+            if (estadoGuardado === 'regular') {
+                divMateria.classList.add('estado-regular');
+            } else if (estadoGuardado === 'final') {
+                divMateria.classList.add('estado-final');
+            } else {
+                if (!puedeRegularizar(materia.codigo)) {
+                    divMateria.classList.add('materia-bloqueada');
+                }
+            }
+        });
+    }
 
     function cambiarEstadoMateria(codigo) {
         const estadoActual = localStorage.getItem(codigo);
-        const divMateria = document.querySelector(`.materia[data-codigo="${codigo}"]`);
 
-        if (estadoActual === null) {
+        if (estadoActual === null) { // Materia sin marcar
             if (puedeRegularizar(codigo)) {
-                localStorage.setItem(codigo, 'regular');
-                divMateria.classList.add('estado-regular');
+                const confirmacion = confirm(`¿Quieres marcar esta materia como REGULAR y aprobar automáticamente todas sus correlativas?\n\nEsta acción es ideal para ponerte al día rápidamente.`);
+                if (confirmacion) {
+                    const prerequisitos = encontrarPrerequisitos(codigo);
+                    prerequisitos.forEach(pre => {
+                        if (pre !== codigo) { // No queremos marcar la materia actual como final aún
+                            localStorage.setItem(pre, 'final');
+                        }
+                    });
+                    localStorage.setItem(codigo, 'regular');
+                    actualizarVisualMalla();
+                }
             } else {
-                alert('No cumples las correlativas para regularizar esta materia.');
+                alert('Materia bloqueada: Aún no cumples las correlativas para cursarla.');
             }
-        } else if (estadoActual === 'regular') {
+        } else if (estadoActual === 'regular') { // Materia regular
             if (puedeFinalizar(codigo)) {
                 localStorage.setItem(codigo, 'final');
-                divMateria.classList.remove('estado-regular');
-                divMateria.classList.add('estado-final');
+                actualizarVisualMalla();
             } else {
-                 alert('No cumples las correlativas para rendir el final de esta materia.');
+                alert('No cumples las correlativas para rendir el final de esta materia.');
             }
-        } else if (estadoActual === 'final') {
+        } else if (estadoActual === 'final') { // Materia final
             localStorage.removeItem(codigo);
-            divMateria.classList.remove('estado-final');
+            actualizarVisualMalla();
         }
-
-        actualizarVisualMalla();
-    }
-
-    // --- NUEVA FUNCIÓN DE AVANCE RÁPIDO ---
-    function marcarProgresoHasta(codigoObjetivo) {
-        const confirmacion = confirm(`¿Estás seguro que quieres marcar todas las materias necesarias hasta "${codigoObjetivo}" como APROBADAS?\n\nEsta acción limpiará tu progreso actual y lo reescribirá.`);
-        if (!confirmacion) return;
-
-        const materiasAProcesar = new Set();
-        const visitadas = new Set();
-
-        function encontrarPrerequisitos(codigo) {
-            if (visitadas.has(codigo)) return;
-            visitadas.add(codigo);
-
-            const materia = materias.find(m => m.codigo === codigo);
-            if (!materia) return;
-
-            // Agregamos la materia actual a la lista para ser aprobada
-            materiasAProcesar.add(codigo);
-
-            // Buscamos recursivamente en sus correlativas
-            materia.cursar.forEach(req => encontrarPrerequisitos(req.materia));
-            materia.rendir.forEach(req => encontrarPrerequisitos(req.materia));
-        }
-
-        // Empezamos la búsqueda desde la materia objetivo
-        encontrarPrerequisitos(codigoObjetivo);
-
-        // Limpiamos todo el progreso anterior
-        localStorage.clear();
-        
-        // Marcamos todas las materias encontradas como "final"
-        materiasAProcesar.forEach(codigo => {
-            localStorage.setItem(codigo, 'final');
-        });
-
-        // Finalmente, recargamos la página para que se apliquen todos los cambios visuales
-        location.reload();
     }
 
     // --- CREACIÓN INICIAL DE LA MALLA ---
@@ -135,23 +143,14 @@ document.addEventListener("DOMContentLoaded", () => {
             if (columna) {
                 const divMateria = document.createElement("div");
                 divMateria.classList.add("materia");
-                if(materia.esAnual) divMateria.style.gridColumn = "span 2";
+                if (materia.esAnual) divMateria.style.gridColumn = "span 2";
                 
                 divMateria.dataset.codigo = materia.codigo;
                 divMateria.innerHTML = `<strong>${materia.nombre}</strong><span>${materia.codigo}</span>`;
                 
-                const estadoGuardado = localStorage.getItem(materia.codigo);
-                if (estadoGuardado === 'regular') divMateria.classList.add('estado-regular');
-                else if (estadoGuardado === 'final') divMateria.classList.add('estado-final');
-                
-                // Clic izquierdo para el manejo individual
                 divMateria.addEventListener("click", () => cambiarEstadoMateria(materia.codigo));
-                
-                // Clic derecho para el avance rápido
-                divMateria.addEventListener("contextmenu", (e) => {
-                    e.preventDefault(); // Previene que aparezca el menú contextual del navegador
-                    marcarProgresoHasta(materia.codigo);
-                });
+                // Quitamos el Clic Derecho para no generar confusión
+                divMateria.addEventListener("contextmenu", (e) => e.preventDefault());
 
                 divMateria.addEventListener("mouseover", () => resaltarCorrelativas(materia.codigo));
                 divMateria.addEventListener("mouseout", limpiarResaltado);
@@ -163,9 +162,8 @@ document.addEventListener("DOMContentLoaded", () => {
         actualizarVisualMalla();
     }
     
-    // Las funciones de hover y de chequeo no cambian
-    function resaltarCorrelativas(codigoSeleccionado) { /* ...código sin cambios... */ }
-    function limpiarResaltado() { /* ...código sin cambios... */ }
+    function resaltarCorrelativas(codigoSeleccionado) { /* Código sin cambios */ }
+    function limpiarResaltado() { /* Código sin cambios */ }
 
     crearMalla();
 });
