@@ -41,22 +41,45 @@ document.addEventListener("DOMContentLoaded", () => {
     const mallaContenedor = document.getElementById("malla");
     const TOTAL_SEMESTRES = 10;
 
-    // --- LÓGICA DE AUTOCOMPLETADO ---
+    // --- LÓGICA DE AUTOCOMPLETADO Y GESTIÓN DE CLICS ---
+
     function encontrarPrerequisitos(codigo, tipoRequisito, prerequisitos = new Set()) {
         const materia = materias.find(m => m.codigo === codigo);
         if (!materia || prerequisitos.has(codigo)) return prerequisitos;
 
         const requisitos = (tipoRequisito === 'regular') ? materia.cursar : materia.rendir;
+        
         requisitos.forEach(req => {
             prerequisitos.add(req.materia);
-            // Viajamos hacia atrás recursivamente
-            encontrarPrerequisitos(req.materia, req.estado === 'Aprob.' ? 'final' : 'regular', prerequisitos);
+            const proximoTipo = (req.estado === 'Aprob.') ? 'final' : 'regular';
+            encontrarPrerequisitos(req.materia, proximoTipo, prerequisitos);
         });
         
         return prerequisitos;
     }
     
-    // --- LÓGICA DE LA INTERFAZ ---
+    function gestionarClicMateria(codigo) {
+        const estadoActual = localStorage.getItem(codigo);
+
+        if (estadoActual === null) { // 1er Clic: Vacío -> Regular
+            const prerequisitos = encontrarPrerequisitos(codigo, 'regular');
+            prerequisitos.forEach(pre => localStorage.setItem(pre, 'regular'));
+            localStorage.setItem(codigo, 'regular');
+
+        } else if (estadoActual === 'regular') { // 2do Clic: Regular -> Final
+            const prerequisitos = encontrarPrerequisitos(codigo, 'final');
+            prerequisitos.forEach(pre => localStorage.setItem(pre, 'final'));
+            localStorage.setItem(codigo, 'final');
+
+        } else if (estadoActual === 'final') { // 3er Clic: Final -> Vacío
+            localStorage.removeItem(codigo);
+        }
+
+        actualizarVisualMalla();
+    }
+
+    // --- LÓGICA DE LA INTERFAZ Y CREACIÓN DE LA MALLA ---
+
     function actualizarVisualMalla() {
         materias.forEach(materia => {
             const divMateria = document.querySelector(`.materia[data-codigo="${materia.codigo}"]`);
@@ -73,29 +96,6 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    function manejarClicIzquierdo(codigo) {
-        const estadoActual = localStorage.getItem(codigo);
-        
-        if (estadoActual === 'final') { // Si ya está aprobada, limpiarla
-            localStorage.removeItem(codigo);
-        } else { // Si está regular o sin marcar, la ponemos como regular
-            const prerequisitos = encontrarPrerequisitos(codigo, 'regular');
-            prerequisitos.forEach(pre => localStorage.setItem(pre, 'regular'));
-            localStorage.setItem(codigo, 'regular'); // Aseguramos que la actual se marque
-        }
-
-        actualizarVisualMalla();
-    }
-
-    function manejarClicDerecho(codigo) {
-        const prerequisitos = encontrarPrerequisitos(codigo, 'final');
-        prerequisitos.forEach(pre => localStorage.setItem(pre, 'final'));
-        localStorage.setItem(codigo, 'final'); // Aseguramos que la actual se marque
-
-        actualizarVisualMalla();
-    }
-
-    // --- CREACIÓN INICIAL DE LA MALLA ---
     function crearMalla() {
         mallaContenedor.innerHTML = '';
         for (let i = 1; i <= TOTAL_SEMESTRES; i++) {
@@ -122,13 +122,10 @@ document.addEventListener("DOMContentLoaded", () => {
                 divMateria.dataset.codigo = materia.codigo;
                 divMateria.innerHTML = `<strong>${materia.nombre}</strong><span>${materia.codigo}</span>`;
                 
-                divMateria.addEventListener("click", () => manejarClicIzquierdo(materia.codigo));
-                divMateria.addEventListener("contextmenu", (e) => {
-                    e.preventDefault(); // Evita el menú del navegador
-                    manejarClicDerecho(materia.codigo);
-                });
+                divMateria.addEventListener("click", () => gestionarClicMateria(materia.codigo));
+                divMateria.addEventListener("contextmenu", (e) => e.preventDefault());
 
-                // La visualización de correlativas al pasar el mouse se mantiene
+                // La visualización al pasar el mouse sigue funcionando igual
                 divMateria.addEventListener("mouseover", () => resaltarCorrelativas(materia.codigo));
                 divMateria.addEventListener("mouseout", limpiarResaltado);
 
@@ -136,49 +133,24 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         });
 
-        actualizarVisualMalla(); // Carga el estado guardado al iniciar
+        actualizarVisualMalla();
     }
     
     function resaltarCorrelativas(codigoSeleccionado) {
         // Esta función es solo visual, no necesita cambios
-        const materiaSeleccionada = materias.find(m => m.codigo === codigoSeleccionado);
-        if (!materiaSeleccionada) return;
-
         document.querySelectorAll('.materia').forEach(div => div.classList.add('opaca'));
-
         const divSeleccionado = document.querySelector(`[data-codigo="${codigoSeleccionado}"]`);
-        if (divSeleccionado) {
-            divSeleccionado.classList.remove('opaca');
-            divSeleccionado.classList.add('seleccionada');
-        }
-
-        materiaSeleccionada.cursar.forEach(corr => {
-            const div = document.querySelector(`[data-codigo="${corr.materia}"]`);
-            if (div) {
-                div.classList.remove('opaca');
-                div.classList.add('correlativa-cursar');
-            }
-        });
-        materiaSeleccionada.rendir.forEach(corr => {
-            const div = document.querySelector(`[data-codigo="${corr.materia}"]`);
-            if (div) {
-                div.classList.remove('opaca');
-                if (!div.classList.contains('correlativa-cursar')) {
-                    div.classList.add('correlativa-rendir');
-                }
-            }
-        });
+        if (divSeleccionado) divSeleccionado.classList.remove('opaca');
     }
     
     function limpiarResaltado() {
-        document.querySelectorAll('.materia').forEach(div => {
-            div.classList.remove('opaca', 'seleccionada', 'correlativa-cursar', 'correlativa-rendir');
-        });
+        document.querySelectorAll('.materia').forEach(div => div.classList.remove('opaca'));
     }
 
     crearMalla();
 });
 
+// La función de limpiar sigue siendo global
 function limpiarProgreso() {
     if (confirm('¿Estás seguro de que quieres borrar todo tu progreso? Esta acción no se puede deshacer.')) {
         localStorage.clear();
