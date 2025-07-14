@@ -1,132 +1,138 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap');
+
 body {
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-  background-color: #f8f9fa;
-  color: #343a40;
+  font-family: 'Nunito', sans-serif;
+  background-color: #fff5f8; /* Rosa muy pálido de fondo */
+  color: #5c3a4d;
   padding: 20px;
 }
 
 h1 {
-  color: #ad5d82;
+  color: #e58cba; /* Rosa principal para el título */
   text-align: center;
   margin-bottom: 20px;
+  font-weight: 700;
 }
 
 .leyenda {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 20px;
+  gap: 15px;
   margin-bottom: 25px;
   flex-wrap: wrap;
 }
 
-.leyenda span {
-  padding: 5px 10px;
-  border-radius: 12px;
+.leyenda span, .leyenda button {
+  padding: 8px 15px;
+  border-radius: 16px;
   font-size: 14px;
-  font-weight: 500;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
 }
 
-.leyenda .seleccionada {
-  background-color: #f7e1ff;
-  border: 1px solid #c77dff;
-  color: #7b2cbf;
-}
-.leyenda .para-cursar {
-  background-color: #dbeafe;
-  border: 1px solid #60a5fa;
-  color: #2563eb;
-}
-.leyenda .para-rendir {
-  background-color: #dcfce7;
-  border: 1px solid #4ade80;
-  color: #16a34a;
-}
-.leyenda .requerida-por {
-  background-color: #ffedd5;
-  border: 1px solid #fb923c;
-  color: #f97316;
-}
+/* Colores de la leyenda */
+.leyenda .estado-regular { background-color: #fedee4; border: 1px solid #f4a5b9; color: #b56d82;}
+.leyenda .estado-final { background-color: #f1e4ff; border: 1px solid #c58af9; color: #8e4ec6;}
+.leyenda button { background-color: #f1f1f1; color: #555; }
+.leyenda button:hover { transform: translateY(-2px); box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
 
 #malla-contenedor {
-  max-width: 1600px;
+  max-width: 1700px;
   margin: 0 auto;
-  overflow-x: auto; /* Para pantallas pequeñas */
+  padding: 10px;
+  overflow-x: auto;
 }
 
 #malla {
   display: grid;
-  grid-template-columns: repeat(10, 1fr); /* 10 semestres */
+  grid-template-columns: repeat(10, 1fr);
   gap: 15px;
+  min-width: 1400px; /* Evita que se aplaste demasiado */
 }
 
 .semestre-columna {
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  border-left: 1px solid #dee2e6;
-  padding-left: 10px;
+  gap: 15px;
+  padding-top: 10px;
 }
 
 .semestre-header {
-  font-weight: bold;
+  font-weight: 700;
   text-align: center;
-  color: #6c757d;
-  padding: 10px;
-  border-bottom: 2px solid #e9ecef;
+  color: #bfa1b0;
+  padding-bottom: 10px;
+  border-bottom: 2px solid #fce8f0;
 }
 
 .materia {
-  border: 1px solid #ced4da;
-  border-left: 5px solid #6c757d; /* Color por defecto */
-  border-radius: 8px;
-  padding: 12px;
+  border: 1px solid #fce8f0; /* Borde rosa muy suave */
+  border-left: 6px solid #e0c8d3; /* Borde por defecto */
+  border-radius: 10px;
+  padding: 15px;
   background-color: #fff;
   font-size: 14px;
   transition: all 0.2s ease-in-out;
   cursor: pointer;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+  box-shadow: 0 2px 5px rgba(229, 140, 186, 0.08);
+  min-height: 90px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .materia:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  transform: translateY(-4px);
+  box-shadow: 0 5px 15px rgba(229, 140, 186, 0.15);
 }
 
 .materia strong {
   display: block;
   margin-bottom: 5px;
-  color: #495057;
+  color: #8c5d79;
+  font-weight: 700;
 }
 
 .materia span {
   font-size: 12px;
-  color: #6c757d;
+  color: #bfa1b0;
 }
 
-/* --- Estados de Interacción --- */
+/* --- ESTADOS DE PROGRESO --- */
+.materia.estado-regular {
+  background-color: #fedee4;
+  border-left-color: #f4a5b9;
+}
+.materia.estado-final {
+  background-color: #f1e4ff;
+  border-left-color: #c58af9;
+}
+
+
+/* --- ESTADOS DE INTERACCIÓN (Hover) --- */
 .materia.seleccionada {
-  border-left-color: #7b2cbf;
-  background-color: #f7e1ff;
+  border: 2px solid #c58af9;
 }
-
 .materia.correlativa-cursar {
-  border-left-color: #2563eb;
   background-color: #dbeafe;
+  border-left-color: #60a5fa;
 }
-
 .materia.correlativa-rendir {
-  border-left-color: #16a34a;
   background-color: #dcfce7;
+  border-left-color: #4ade80;
 }
-
 .materia.requerida-por {
-    border-left-color: #f97316;
     background-color: #ffedd5;
+    border-left-color: #fb923c;
 }
-
-/* --- Opacidad para materias no relacionadas --- */
 .materia.opaca {
-    opacity: 0.5;
-    transition: opacity 0.2s;
+    opacity: 0.6;
+    transform: none; /* No animar las opacas */
+    box-shadow: none;
+}
+.materia.opaca:hover {
+    opacity: 0.6; /* Mantener opacidad en hover */
 }

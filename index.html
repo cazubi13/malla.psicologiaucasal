@@ -7,17 +7,19 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <h1>Malla Curricular Interactiva - Psicología UCASAL (Plan 1114)</h1>
+  <h1>Malla Curricular Interactiva - Psicología UCASAL</h1>
 
   <div class="leyenda">
     <span class="estado-regular">● Regularizada</span>
     <span class="estado-final">● Aprobada</span>
-    <span class="cursada">● Correlativa para cursar</span>
-    <span class="aprobada">● Correlativa para rendir</span>
     <button onclick="limpiarProgreso()">🧹 Limpiar progreso</button>
   </div>
 
-  <div id="malla"></div>
+  <div id="malla-contenedor">
+      <div id="malla">
+          <!-- El contenido se generará con JavaScript -->
+      </div>
+  </div>
 
   <script src="script.js"></script>
 </body>
