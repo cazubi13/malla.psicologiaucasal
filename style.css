@@ -1,20 +1,22 @@
+/* style.css */
 @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap');
 
 :root {
-  --color-fondo: #fef6f9;
+  /* Paleta Unificada de Rosas */
+  --color-aprobado-bg: #fecdd3;     /* Rosa oscuro de fondo */
+  --color-aprobado-borde: #fb7185;
+  --color-aprobado-texto: #be123c;
+
+  --color-regular-bg: #ffe4e6;      /* Rosa claro de fondo */
+  --color-regular-borde: #fda4af;
+  --color-regular-texto: #e11d48;
+  
+  /* Otros colores */
+  --color-fondo: #fffbfe;
   --color-titulo: #e68ab8;
   --color-texto-principal: #5c3a4d;
   --color-texto-secundario: #bfa1b0;
-  
-  --color-regular-bg: #fecdd3; /* Rosa para regular */
-  --color-regular-borde: #fb7185;
-  --color-regular-texto: #be123c;
-  
-  --color-final-bg: #e9d5ff; /* Lila para final */
-  --color-final-borde: #c084fc;
-  --color-final-texto: #7e22ce;
-
-  --color-bloqueado-bg: #f3f4f6; /* Gris para bloqueado */
+  --color-bloqueado-bg: #f3f4f6;
   --color-bloqueado-borde: #d1d5db;
 }
 
@@ -52,7 +54,7 @@ h1 {
 }
 
 .leyenda .estado-regular { background-color: var(--color-regular-bg); border-color: var(--color-regular-borde); color: var(--color-regular-texto);}
-.leyenda .estado-final { background-color: var(--color-final-bg); border-color: var(--color-final-borde); color: var(--color-final-texto);}
+.leyenda .estado-final { background-color: var(--color-aprobado-bg); border-color: var(--color-aprobado-borde); color: var(--color-aprobado-texto);}
 .leyenda button { background-color: #e5e7eb; color: #374151; }
 .leyenda button:hover { transform: translateY(-2px); box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
 
@@ -111,7 +113,7 @@ h1 {
 
 /* --- ESTADOS DE PROGRESO --- */
 .materia.estado-regular { background-color: var(--color-regular-bg); border-left-color: var(--color-regular-borde); }
-.materia.estado-final { background-color: var(--color-final-bg); border-left-color: var(--color-final-borde); }
+.materia.estado-final { background-color: var(--color-aprobado-bg); border-left-color: var(--color-aprobado-borde); }
 
 /* --- ESTADO DE BLOQUEO --- */
 .materia.materia-bloqueada {
