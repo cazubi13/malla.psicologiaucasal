@@ -43,22 +43,25 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // --- LÓGICA DE AUTOCOMPLETADO Y GESTIÓN DE CLICS ---
 
-    function aplicarRequisitosRecursivamente(codigo, tipoObjetivo) {
+    function aplicarRequisitosRecursivamente(codigo, estadoObjetivo) {
         const materia = materias.find(m => m.codigo === codigo);
         if (!materia) return;
 
-        const requisitos = (tipoObjetivo === 'final') ? materia.rendir : materia.cursar;
+        // Determina la lista de requisitos a procesar (para cursar o para rendir)
+        const requisitos = (estadoObjetivo === 'final') ? materia.rendir : materia.cursar;
 
+        // Para cada requisito, aplicamos su estado correspondiente y seguimos viajando hacia atrás
         requisitos.forEach(req => {
             const estadoRequerido = (req.estado === 'Aprob.') ? 'final' : 'regular';
             
-            // Solo actualizamos si el estado actual es "menor" al requerido.
             const estadoActual = localStorage.getItem(req.materia);
-            if(estadoRequerido === 'final' || (estadoRequerido === 'regular' && estadoActual === null)) {
-                localStorage.setItem(req.materia, estadoRequerido);
-            }
-            
-            // Llamada recursiva para seguir viajando hacia atrás
+
+            // No queremos "bajar" de categoría una materia. Si ya es final, la dejamos así.
+            if (estadoActual === 'final') return; 
+
+            localStorage.setItem(req.materia, estadoRequerido);
+
+            // Llamada recursiva para procesar el árbol de este requisito
             aplicarRequisitosRecursivamente(req.materia, estadoRequerido);
         });
     }
@@ -67,15 +70,21 @@ document.addEventListener("DOMContentLoaded", () => {
         const estadoActual = localStorage.getItem(codigo);
 
         if (estadoActual === null) { // 1er Clic: Vacío -> Regular
+            // Aplicamos los requisitos para CURSAR la materia actual
             aplicarRequisitosRecursivamente(codigo, 'regular');
+            // Y finalmente, marcamos la materia actual como regular
             localStorage.setItem(codigo, 'regular');
 
         } else if (estadoActual === 'regular') { // 2do Clic: Regular -> Final
+            // Aplicamos los requisitos para RENDIR la materia actual
             aplicarRequisitosRecursivamente(codigo, 'final');
+            // Y finalmente, marcamos la materia actual como final
             localStorage.setItem(codigo, 'final');
 
         } else if (estadoActual === 'final') { // 3er Clic: Final -> Vacío
             localStorage.removeItem(codigo);
+            // Opcional: podrías querer limpiar también las correlativas que se marcaron
+            // por esta materia. Por simplicidad, por ahora solo la limpia a ella.
         }
 
         actualizarVisualMalla();
@@ -138,11 +147,11 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     
     function resaltarCorrelativas(codigoSeleccionado) {
-        // Esta función es solo visual, no necesita cambios
+        // ...
     }
     
     function limpiarResaltado() {
-        // Esta función es solo visual, no necesita cambios
+        // ...
     }
 
     crearMalla();
