@@ -100,10 +100,10 @@ document.addEventListener("DOMContentLoaded", () => {
     function gestionarClicIzquierdo(codigo) {
         const estadoActual = localStorage.getItem(codigo);
 
-        if (estadoActual === null) { // 1er Clic: Vacío -> Regular
+        if (estadoActual === null) { // 1er Clic: Vacío -> Regular con autocompletado
             aplicarRequisitosInteligentemente(codigo, 'regular');
             localStorage.setItem(codigo, 'regular');
-        } else if (estadoActual === 'regular') { // 2do Clic: Regular -> Final
+        } else if (estadoActual === 'regular') { // 2do Clic: Regular -> Final con autocompletado
             aplicarRequisitosInteligentemente(codigo, 'final');
             localStorage.setItem(codigo, 'final');
         } else if (estadoActual === 'final') { // 3er Clic: Final -> Vacío (Borrado Individual)
@@ -172,7 +172,10 @@ document.addEventListener("DOMContentLoaded", () => {
                     gestionarClicDerecho(materia.codigo);
                 });
                 
-                // ...otros listeners...
+                divMateria.addEventListener("mouseover", () => {});
+                divMateria.addEventListener("mouseout", () => {});
+                
+                columna.appendChild(divMateria); // LA LÍNEA CRÍTICA
             }
         });
 
